@@ -30,7 +30,7 @@ public class Reserva {
 	private Pacote pacote;
 	
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "cd_cliente")
 	private Cliente cliente;
 
     public Reserva(CadastroReservaDTO dto) {

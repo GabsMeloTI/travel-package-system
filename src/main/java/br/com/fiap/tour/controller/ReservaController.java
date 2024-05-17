@@ -25,11 +25,7 @@ public class ReservaController {
     private ReservaRepository reservaRepository;
 
 
-    @GetMapping("valor-maior")
-    public ResponseEntity<Page<DetalhesReservaDTO>> filtrar(@RequestParam("valor") Float valor, Pageable page) {
-        var lista = reservaRepository.filtroPreco(valor, page).map(DetalhesReservaDTO::new);
-        return ResponseEntity.ok(lista);
-    }
+
 
     @PostMapping
     @Transactional

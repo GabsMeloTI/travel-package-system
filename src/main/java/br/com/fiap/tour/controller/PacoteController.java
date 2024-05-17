@@ -10,10 +10,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/pacotes")
@@ -25,6 +29,18 @@ public class PacoteController {
     @Autowired
     private DestinoRepository destinoRepository;
 
+    @GetMapping("total-pacotes")
+    public Integer totalValor(@RequestParam("nome") String nome) {
+        return pacoteRepository.valorTotal(nome);
+    }
+
+    @GetMapping("por-data")
+    public ResponseEntity<Page<DetalhesPacoteDTO>> buscarPorData(@RequestParam("inicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+                                                                 @RequestParam("fim") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim,
+                                                                 Pageable page) {
+        var lista = pacoteRepository.buscarPorDatas(inicio, fim, page).map(DetalhesPacoteDTO::new);
+        return ResponseEntity.ok(lista);
+    }
 
     @GetMapping("todos-destinos")
     public ResponseEntity<Page<DetalhesPacoteDTO>> buscarDestino(@RequestParam("id") Long id, Pageable page) {

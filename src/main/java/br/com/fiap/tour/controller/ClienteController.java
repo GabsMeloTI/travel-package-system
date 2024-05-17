@@ -21,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/clientes")
@@ -32,6 +33,27 @@ public class ClienteController {
     @Autowired
     private CidadeRepository cidadeRepository;
 
+    @GetMapping("total-clientes-estado")
+    public Integer totalClientes(@RequestParam("estado") String estado) {
+        return clienteRepository.totalClientePorEstado(estado);
+    }
+
+    @GetMapping("por-estados")
+    public ResponseEntity<List<Cliente>> buscarPorEstado(@RequestParam("estados") List<String> estados) {
+        var lista = clienteRepository.buscarPorEstados(estados);
+        return ResponseEntity.ok(lista);
+    }
+    @GetMapping("por-nome-cidade")
+    public ResponseEntity<Page<DetalhesClienteDTO>> buscaNomeCidade(@RequestParam("nome") String nome, @RequestParam("cidade") String cidade, Pageable page) {
+        var lista = clienteRepository.buscarPorNomeCidade(nome, cidade, page).map(DetalhesClienteDTO::new);
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("por-valor-pacote")
+    public ResponseEntity<Page<DetalhesClienteDTO>> buscarPorPrecoPacote(@RequestParam("valor") Double valor, Pageable pageable){
+        var lista = clienteRepository.buscarPorValorPacote(valor, pageable).map(DetalhesClienteDTO::new);
+        return ResponseEntity.ok(lista);
+    }
 
     @GetMapping("por-estado")
     public ResponseEntity<Page<DetalhesClienteDTO>> buscarEstado(@RequestParam("uf") String uf, Pageable page) {
