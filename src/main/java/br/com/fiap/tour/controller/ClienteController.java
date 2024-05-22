@@ -8,6 +8,7 @@ import br.com.fiap.tour.dto.cidade.DetalhesCidadeDTO;
 import br.com.fiap.tour.dto.cliente.AtualizacaoClienteDTO;
 import br.com.fiap.tour.dto.cliente.CadastroClienteDTO;
 import br.com.fiap.tour.dto.cliente.DetalhesClienteDTO;
+import br.com.fiap.tour.dto.cliente.RetornoLong;
 import br.com.fiap.tour.repository.CidadeRepository;
 import br.com.fiap.tour.repository.ClienteRepository;
 import jakarta.validation.Valid;
@@ -34,8 +35,9 @@ public class ClienteController {
     private CidadeRepository cidadeRepository;
 
     @GetMapping("total-clientes-estado")
-    public Integer totalClientes(@RequestParam("estado") String estado) {
-        return clienteRepository.totalClientePorEstado(estado);
+    public ResponseEntity<RetornoLong> totalClientes(@RequestParam("estado") String estado) {
+        var quantidade  = clienteRepository.totalClientePorEstado(estado);
+        return ResponseEntity.ok(new RetornoLong(estado, quantidade));
     }
 
     @GetMapping("por-estados")

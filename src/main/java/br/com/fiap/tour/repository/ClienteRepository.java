@@ -33,5 +33,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     List<Cliente> buscarPorEstados(@Param("estados") List<String> estados);
 
     @Query("select count(c) from Cliente c where c.endereco.cidade.uf = :estado")
-    Integer totalClientePorEstado(@Param("estado") String estado);
+    Long totalClientePorEstado(@Param("estado") String estado);
 }

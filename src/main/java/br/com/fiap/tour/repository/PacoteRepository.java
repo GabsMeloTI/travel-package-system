@@ -17,6 +17,7 @@ public interface PacoteRepository extends JpaRepository<Pacote, Long> {
     Page<Pacote> buscarPorDatas(@Param("inicio")LocalDate inicio, @Param("fim") LocalDate fim, Pageable page);
 
     @Query("select sum(p.valor) from Pacote p where p.destino.nome = :nome")
-    Integer valorTotal(@Param("nome") String nome);
+    Float valorTotal(@Param("nome") String nome);
+
 
 }

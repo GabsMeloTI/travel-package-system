@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/reservas")
 public class ReservaController {
@@ -26,6 +28,11 @@ public class ReservaController {
 
 
 
+    @GetMapping("por-data-reserva")
+    public ResponseEntity<Page<Reserva>> pesquisar(@RequestParam("inicio") LocalDate inicio, @RequestParam("fim") LocalDate fim, Pageable pageable){
+        var page = reservaRepository.findByDataBetween(inicio, fim, pageable);
+        return ResponseEntity.ok(page);
+    }
 
     @PostMapping
     @Transactional

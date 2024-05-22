@@ -1,9 +1,11 @@
 package br.com.fiap.tour.controller;
 
+import br.com.fiap.tour.domain.Destino;
 import br.com.fiap.tour.domain.Pacote;
 import br.com.fiap.tour.dto.pacote.AtualizacaoPacoteDTO;
 import br.com.fiap.tour.dto.pacote.CadastroPacoteDTO;
 import br.com.fiap.tour.dto.pacote.DetalhesPacoteDTO;
+import br.com.fiap.tour.dto.pacote.RetornoValorPorDestino;
 import br.com.fiap.tour.repository.DestinoRepository;
 import br.com.fiap.tour.repository.PacoteRepository;
 import jakarta.validation.Valid;
@@ -29,9 +31,13 @@ public class PacoteController {
     @Autowired
     private DestinoRepository destinoRepository;
 
+
+
+
     @GetMapping("total-pacotes")
-    public Integer totalValor(@RequestParam("nome") String nome) {
-        return pacoteRepository.valorTotal(nome);
+    public ResponseEntity<RetornoValorPorDestino> totalValor(@RequestParam("nome") String nome) {
+        var quantidade  = pacoteRepository.valorTotal(nome);
+        return ResponseEntity.ok(new RetornoValorPorDestino(nome, quantidade));
     }
 
     @GetMapping("por-data")
